@@ -11,6 +11,7 @@ This web application serves as a robust platform for restaurant management, offe
      - **Services**: Overview of restaurant services.
      - **Customer Favorites**: Highlights popular dishes.
    - "Add to Cart" functionality with **SweetAlert** notifications confirming item additions.
+  
    **User Profile**:
    - Accessible via an avatar dropdown.
    - Allows users to upload a profile picture.
