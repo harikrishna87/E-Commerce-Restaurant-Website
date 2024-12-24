@@ -11,6 +11,10 @@ This web application serves as a robust platform for restaurant management, offe
      - **Services**: Overview of restaurant services.
      - **Customer Favorites**: Highlights popular dishes.
    - "Add to Cart" functionality with **SweetAlert** notifications confirming item additions.
+   **User Profile**:
+   - Accessible via an avatar dropdown.
+   - Allows users to upload a profile picture.
+   
 3. **Menu Page**:
    - Displays food items categorized as:
      - Veg
@@ -32,9 +36,6 @@ This web application serves as a robust platform for restaurant management, offe
    - Displays a success message upon successful payment.
 6. **Order Page**:
    - Lists purchased items in a **table format**, providing users with a clear view of their order history.
-7. **User Profile**:
-   - Accessible via an avatar dropdown.
-   - Allows users to upload a profile picture.
 
 ## Technologies Used
 - **Frontend**: HTML, CSS, JavaScript
@@ -52,6 +53,11 @@ Firebase Authentication ensures secure user access. On successful login, users a
 The home page serves as the central hub for restaurant information. Users can:
 - View testimonials, services, and customer favorites.
 - Add items to the cart with real-time alerts.
+
+### User Profile:
+The avatar dropdown allows users to:
+- View their details.
+- Upload a profile picture for personalization.
 
 ### Menu Page:
 The menu page categorizes items for easy browsing. Features include:
@@ -72,10 +78,6 @@ A payment process built with HTML, CSS, and Bootstrap offers:
 ### Order Page:
 Displays all purchased items in a table format, providing an organized view of past orders.
 
-### User Profile:
-The avatar dropdown allows users to:
-- View their details.
-- Upload a profile picture for personalization.
 
 ## Installation
 1. Clone the repository:
