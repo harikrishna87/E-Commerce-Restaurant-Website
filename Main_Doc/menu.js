@@ -1081,6 +1081,11 @@ function renderCards(page) {
 
     cardsContainer.innerHTML = "";
 
+    if (currentProducts.length === 0) {
+      cardsContainer.innerHTML = `<p class="not_available">Product not available....</p>`;
+      return;
+  }
+
     currentProducts.forEach((product) => {
         const cardHTML = `
             <div class="col-12 col-sm-6 col-lg-3 mb-4">
@@ -1253,21 +1258,25 @@ filterButtons.forEach((button) => {
 });
 
 const searchInput = document.getElementById("search");
-searchInput.addEventListener("input", (e) => {
-  const query = e.target.value.toLowerCase();
-
-  filteredProducts = products.filter((product) => {
-      const title = product.title?.toLowerCase() || "";
-      const category = product.category?.toLowerCase() || "";
-      const description = product.description?.toLowerCase() || "";
-
-      return title.includes(query) || category.includes(query) || description.includes(query);
-  });
-
-  currentPage = 1;
-  renderPagination();
-  renderCards(currentPage);
+searchInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+        searchProducts(e.target.value);
+    }
 });
+
+function searchProducts(query) {
+    filteredProducts = products.filter((product) => {
+        const title = product.title?.toLowerCase() || "";
+        const category = product.category?.toLowerCase() || "";
+        const description = product.description?.toLowerCase() || "";
+
+        return title.includes(query.toLowerCase()) || category.includes(query.toLowerCase()) || description.includes(query.toLowerCase());
+    });
+
+    currentPage = 1;
+    renderPagination();
+    renderCards(currentPage);
+};
 
 
 // Initialize

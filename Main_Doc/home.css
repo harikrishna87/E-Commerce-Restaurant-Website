@@ -286,37 +286,17 @@ label.form-label:active {
   text-decoration: none;
 }
 
-.pagination .page-item .page-link {
-  padding: 8px 16px;
-  background-color: rgb(54, 241, 54);
-  color: white;
-  text-align: center;
-  display: flex;
-  flex-wrap: wrap;
-  border-radius: 10px;
-  border: none;
-  margin: 40px 7px;
-  transition: all 0.3s ease;
-}
-
-/* Active page styling */
-.pagination .page-item.active .page-link {
-  background-color: rgb(34, 181, 34);
-  font-weight: bold;
-}
-
-/* Hover effect */
-.pagination .page-item .page-link:hover {
-  background-color: rgb(34, 181, 34);
-  color: white;
-  transform: scale(1.1);
-}
-
 .cards_content {
   height: 375px;
-  border: 1px solid rgb(183, 180, 180);
+  border: 1px solid rgb(216, 215, 215);
   border-radius: 12px;
-  box-shadow: 1px 1px 10px 4px rgb(183, 180, 180);
+  transition: transform 2s;
+  box-shadow: 1px 1px 10px 4px rgb(226, 225, 225);
+}
+
+.cards_content:hover{
+  box-shadow: 1px 1px 10px 4px rgb(164, 163, 163);
+  transform: scale(1.05);
 }
 
 .cards_content img {

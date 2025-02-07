@@ -5,7 +5,7 @@ import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
 } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
-import { getFirestore, setDoc, getDoc, doc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+import { getFirestore, setDoc, doc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -22,6 +22,20 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const db = getFirestore();
 
+// Prevent accessing login page after successful login
+if (window.location.pathname.includes("index.html") && localStorage.getItem("loggedInUserId")) {
+    window.location.href = "home.html";
+}
+
+// Prevent navigating back to the login page after login
+window.onload = function () {
+    history.pushState(null, null, window.location.href);
+    window.onpopstate = function () {
+        history.go(1);
+    };
+};
+
+// Show Message Function
 function showmessage(message, divId) {
     const messagediv = document.getElementById(divId);
     if (messagediv) {
@@ -79,7 +93,6 @@ signup.addEventListener("click", (event) => {
         passwordError.style.display = "none";
     }
 
-
     createUserWithEmailAndPassword(auth, email.value, password.value)
         .then((userCredentials) => {
             const user = userCredentials.user;
@@ -111,8 +124,6 @@ signup.addEventListener("click", (event) => {
         });
 });
 
-
-
 // Login with Email and Password
 const login = document.querySelector(".login-btn");
 login.addEventListener("click", (event) => {
@@ -142,25 +153,21 @@ login.addEventListener("click", (event) => {
         });
 });
 
+// Logout function
+function logout() {
+    localStorage.removeItem("loggedInUserId"); // Remove login flag
+    window.location.href = "index.html";
+}
+
 // Toggle password visibility in the login form
 document.getElementById('icon').addEventListener('click', function () {
     const passwordField = document.getElementById('password');
     const icon = document.getElementById('icon');
 
     if (passwordField) {
-        if (passwordField.type === 'password') {
-            passwordField.type = 'text';
-        } else {
-            passwordField.type = 'password';
-        }
-
-        if (icon.classList.contains('fa-eye-slash')) {
-            icon.classList.remove('fa-eye-slash');
-            icon.classList.add('fa-eye');
-        } else {
-            icon.classList.remove('fa-eye');
-            icon.classList.add('fa-eye-slash');
-        }
+        passwordField.type = passwordField.type === 'password' ? 'text' : 'password';
+        icon.classList.toggle('fa-eye-slash');
+        icon.classList.toggle('fa-eye');
     }
 });
 
@@ -170,19 +177,8 @@ document.getElementById('icon1').addEventListener('click', function () {
     const icon1 = document.getElementById('icon1');
 
     if (signupPasswordField) {
-        if (signupPasswordField.type === 'password') {
-            signupPasswordField.type = 'text';
-        } else {
-            signupPasswordField.type = 'password';
-        }
-
-        if (icon1.classList.contains('fa-eye-slash')) {
-            icon1.classList.remove('fa-eye-slash');
-            icon1.classList.add('fa-eye');
-        } else {
-            icon1.classList.remove('fa-eye');
-            icon1.classList.add('fa-eye-slash');
-        }
+        signupPasswordField.type = signupPasswordField.type === 'password' ? 'text' : 'password';
+        icon1.classList.toggle('fa-eye-slash');
+        icon1.classList.toggle('fa-eye');
     }
 });
-

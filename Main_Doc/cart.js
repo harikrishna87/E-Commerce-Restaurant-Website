@@ -322,6 +322,122 @@ onAuthStateChanged(auth, (user) => {
 });
 
 
+// document.getElementById("btn").addEventListener("click", async () => {
+//     const userId = localStorage.getItem("loggedInUserId");
+//     const cartRef = doc(db, "users", userId);
+//     const cartSnap = await getDoc(cartRef);
+
+//     if (cartSnap.exists()) {
+//         const cartData = cartSnap.data();
+//         const cartItems = cartData.cart || [];
+
+//         if (cartItems.length === 0) {
+//             Swal.fire({
+//                 title: "Cart is Empty",
+//                 text: "Please add items to your cart before proceeding to checkout.",
+//                 icon: "warning",
+//                 confirmButtonColor: "rgb(54, 241, 54)",
+//             });
+//             return;
+//         }
+
+//         let totalAmount = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+//         const paymentModal = new bootstrap.Modal(document.getElementById("paymentModal"));
+//         paymentModal.show();
+
+//         const totalPriceElement = document.querySelector(".footer-title");
+//         const couponInput = document.getElementById("couponCode");
+//         const couponMessage = document.getElementById("couponMessage");
+//         const applyCouponButton = document.getElementById("applyCouponButton");
+
+//         totalPriceElement.innerHTML = `<p class="amt">Total Amount: </p> ₹ ${totalAmount.toFixed(2)}`;
+//         couponMessage.innerText = "";
+
+//         applyCouponButton.addEventListener("click", () => {
+//             const enteredCoupon = couponInput.value.trim().toUpperCase();
+
+//             if (enteredCoupon === "15%OFF") {
+//                 const discount = 0.15 * totalAmount;
+//                 totalAmount -= discount;
+//                 totalPriceElement.innerText = `₹ ${totalAmount.toFixed(2)}`;
+//                 couponMessage.innerText = "Coupon applied successfully! 15% off.";
+//                 couponMessage.style.color = "rgb(54, 241, 54)";
+//                 couponInput.disabled = true;
+//                 applyCouponButton.disabled = true;
+//             } else {
+//                 const discount = 0.05 * totalAmount;
+//                 totalAmount -= discount;
+//                 totalPriceElement.innerText = `₹ ${totalAmount.toFixed(2)}`;
+//                 couponMessage.innerText = "Invalid coupon code. Common 5% discount has been applied.";
+//                 couponMessage.style.color = "red";
+//                 couponInput.disabled = true;
+//                 applyCouponButton.disabled = true;
+//             }
+//         });
+
+//         document.getElementById("confirmPayment").onclick = async () => {
+//             const cardNumber = document.getElementById("cardNumber").value;
+//             const cardHolder = document.getElementById("cardHolder").value;
+//             const expiryDate = document.getElementById("expiryDate").value;
+//             const cvv = document.getElementById("cvv").value;
+//             const phno = document.getElementById("tel").value;
+
+//             // Validate payment details
+//             if (!cardNumber || !cardHolder || !expiryDate || !cvv) {
+//                 Swal.fire({
+//                     title: "Incomplete Details",
+//                     text: "Please fill in all payment details.",
+//                     icon: "error",
+//                     confirmButtonColor: "#d33",
+//                 });
+//                 return;
+//             }
+
+//             paymentModal.hide();
+//             Swal.fire({
+//                 title: "Processing Payment...",
+//                 text: "Please wait while we process your payment.",
+//                 icon: "info",
+//                 allowOutsideClick: false,
+//                 showConfirmButton: false,
+//             });
+
+//             await new Promise((resolve) => setTimeout(resolve, 3000));
+
+//             const purchaseData = {
+//                 items: cartItems.map((item) => ({
+//                     item_name: item.title,
+//                     quantity: item.quantity,
+//                     amount: item.price,
+//                     image: item.image,
+//                     total: item.price * item.quantity,
+//                     payment_method: "Card",
+//                 })),
+//                 total_amount: totalAmount,
+//                 payment_method: "Card",
+//                 purchased_at: new Date().toLocaleDateString('en-GB'),
+//             };
+
+//             const purchaseRef = doc(db, "users", userId, "purchases", new Date().toISOString());
+//             await setDoc(purchaseRef, purchaseData);
+
+//             await updateDoc(cartRef, { cart: [] });
+
+//             Swal.fire({
+//                 title: "Payment Successful",
+//                 text: "Your order has been successfully placed!",
+//                 icon: "success",
+//                 confirmButtonColor: "rgb(54, 241, 54)",
+//             });
+
+//             loadCartData(userId);
+//         };
+//     } else {
+//         console.error("No cart data found.");
+//     }
+// });
+
 document.getElementById("btn").addEventListener("click", async () => {
     const userId = localStorage.getItem("loggedInUserId");
     const cartRef = doc(db, "users", userId);
@@ -430,12 +546,26 @@ document.getElementById("btn").addEventListener("click", async () => {
                 confirmButtonColor: "rgb(54, 241, 54)",
             });
 
+            let itemsMessage = "";
+            cartItems.forEach(item => {
+                itemsMessage += `*${item.title}* - ₹${item.price} x ${item.quantity} = ₹${item.price * item.quantity}\n`;
+            });
+
+            const totalMessage = `Total Amount: ₹${totalAmount.toFixed(2)}\nPayment Method: Card`;
+
+            const phoneNumber = "9550172687";
+            const message = encodeURIComponent(`${itemsMessage}\n${totalMessage}`);
+            const whatsappLink = `https://wa.me/${phoneNumber}?text=${message}`;
+
+            window.open(whatsappLink, '_blank');
+
             loadCartData(userId);
         };
     } else {
         console.error("No cart data found.");
     }
 });
+
 
 
 
